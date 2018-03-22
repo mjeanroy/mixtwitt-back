@@ -1,12 +1,19 @@
 package com.github.houssemba.mixtwitt.domain.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity(name = "users")
 public class User {
-	private final Long id;
-	private final Date creationDate;
-	private final String login;
-	private final String password;
+	@Id
+	private Long id;
+	private Date creationDate;
+	private String login;
+	private String password;
+
+	public User() {
+	}
 
 	private User(Long id, Date creationDate, String login, String password) {
 		this.id = id;
@@ -30,6 +37,7 @@ public class User {
 	public Date getCreationDate() {
 		return creationDate;
 	}
+
 	public static class Builder {
 		private Long id;
 		private Date creationDate;
