@@ -17,6 +17,7 @@
 		<guava.version>23.0</guava.version>
 		<hibernate-validator.version>5.4.2.Final</hibernate-validator.version>
 		<h2.version>1.4.194</h2.version>
+		<commons-fileupload.version>1.3</commons-fileupload.version>
 		<dockerfile-maven-version>1.4.0</dockerfile-maven-version>
 	</properties>
 
@@ -67,6 +68,11 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>${h2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>${commons-fileupload.version}</version>
 		</dependency>
 	</dependencies>
 
