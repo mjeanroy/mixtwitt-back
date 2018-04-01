@@ -6,23 +6,42 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class UserRepository {
+import java.util.Optional;
 
-	private final JdbcTemplate jdbcTemplate;
+@Repository
+public class UserRepository extends AbstractRepository<User> {
 
 	@Autowired
 	public UserRepository(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+		super(jdbcTemplate);
 	}
 
-	public User findByLogin(String login) {
+	public Optional<User> findById(Long id) {
+		String sql =
+				"SELECT id, creation_date, login, password " +
+				"FROM users " +
+				"WHERE id = " + id;
+
+		return findOne(sql, USER_ROW_MAPPER);
+	}
+
+	public Optional<User> findByLogin(String login) {
 		String sql =
 			"SELECT id, creation_date, login, password " +
 			"FROM users " +
 			"WHERE login = '" + login + "'";
 
-		return jdbcTemplate.queryForObject(sql, USER_ROW_MAPPER);
+		return findOne(sql, USER_ROW_MAPPER);
+	}
+
+	public Optional<User> findByLoginAndPassword(String login, String password) {
+		String sql =
+				"SELECT id, creation_date, login, password " +
+				"FROM users " +
+				"WHERE login = '" + login + "' " +
+				"AND password = '" + password + "'";
+
+		return findOne(sql, USER_ROW_MAPPER);
 	}
 
 	private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) -> new User.Builder()

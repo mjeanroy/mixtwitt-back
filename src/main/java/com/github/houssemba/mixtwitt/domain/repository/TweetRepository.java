@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 
+import com.github.houssemba.mixtwitt.domain.exceptions.DaoException;
 import com.github.houssemba.mixtwitt.domain.model.Tweet;
 import com.github.houssemba.mixtwitt.domain.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +19,11 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class TweetRepository {
-
-	private final JdbcTemplate jdbcTemplate;
+public class TweetRepository extends AbstractRepository<Tweet> {
 
 	@Autowired
 	public TweetRepository(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+		super(jdbcTemplate);
 	}
 
 	public List<Tweet> findAll() {
@@ -38,10 +38,10 @@ public class TweetRepository {
 			"INNER JOIN users u ON t.user_id = u.id " +
 			"ORDER BY t.creation_date DESC";
 
-		return jdbcTemplate.query(sql, TWEET_ROW_MAPPER);
+		return findAll(sql, TWEET_ROW_MAPPER);
 	}
 
-	public Tweet findById(Long id) {
+	public Optional<Tweet> findById(Long id) {
 		String sql =
 			"SELECT " +
 				"t.id as id, " +
@@ -53,14 +53,17 @@ public class TweetRepository {
 				"INNER JOIN users u ON t.user_id = u.id " +
 				"WHERE t.id = " + id;
 
-		return jdbcTemplate.queryForObject(sql, TWEET_ROW_MAPPER);
+		return findOne(sql, TWEET_ROW_MAPPER);
 	}
 
 	public Tweet save(User user, String message) {
 		KeyHolder key = new GeneratedKeyHolder();
 		InsertStatementCreation psc = new InsertStatementCreation(user.getId(), message);
 		jdbcTemplate.update(psc, key);
-		return findById(key.getKey().longValue());
+
+		return findById(key.getKey().longValue()).orElseThrow(() ->
+				new DaoException("Cannot find previously inserted tweet")
+		);
 	}
 
 	private static class InsertStatementCreation implements PreparedStatementCreator {

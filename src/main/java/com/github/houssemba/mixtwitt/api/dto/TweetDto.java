@@ -10,8 +10,6 @@ public class TweetDto {
 
 	private Long id;
 	private Date creationDate;
-
-	@NotBlank
 	private String login;
 
 	@NotBlank
