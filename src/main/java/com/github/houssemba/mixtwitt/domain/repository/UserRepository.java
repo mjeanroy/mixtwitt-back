@@ -14,6 +14,4 @@ import java.util.Optional;
 @RepositoryRestResource
 public interface UserRepository extends CrudRepository<User, Long> {
 
-	User findById(Long id);
-
 }
