@@ -17,6 +17,7 @@
 		<guava.version>23.0</guava.version>
 		<hibernate-validator.version>5.4.2.Final</hibernate-validator.version>
 		<h2.version>1.4.194</h2.version>
+		<dockerfile-maven-version>1.4.0</dockerfile-maven-version>
 	</properties>
 
 	<!-- Inherit defaults from Spring Boot -->
@@ -87,6 +88,27 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${spring-boot.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>${dockerfile-maven-version}</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<repository>registry.mr-robot.sh/back</repository>
+					<tag>${project.version}</tag>
+					<buildArgs>
+						<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
