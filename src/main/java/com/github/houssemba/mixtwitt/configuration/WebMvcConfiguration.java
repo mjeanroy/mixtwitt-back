@@ -24,6 +24,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 		super.addInterceptors(registry);
 		registry.addInterceptor(new CorsInterceptor());
 		registry.addInterceptor(new NoCacheHeaderInterceptor());
+		registry.addInterceptor(new WebSecurityHeaderInterceptor());
 		registry.addInterceptor(securityInterceptor);
 	}
 
