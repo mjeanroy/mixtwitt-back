@@ -1,6 +1,7 @@
 package com.github.houssemba.mixtwitt.security.service;
 
 import com.github.houssemba.mixtwitt.domain.model.User;
+import com.github.houssemba.mixtwitt.domain.repository.LoginRepository;
 import com.github.houssemba.mixtwitt.domain.repository.UserRepository;
 import com.github.houssemba.mixtwitt.security.parsers.TokenParser;
 
@@ -10,11 +11,11 @@ import java.util.Optional;
 
 public class SecurityService {
 	private final TokenParser tokenParser;
-	private final UserRepository userRepository;
+	private final LoginRepository loginRepository;
 
-	public SecurityService(TokenParser tokenParser, UserRepository userRepository) {
+	public SecurityService(TokenParser tokenParser, LoginRepository loginRepository) {
 		this.tokenParser = tokenParser;
-		this.userRepository = userRepository;
+		this.loginRepository = loginRepository;
 	}
 
 	public void authenticate(HttpServletResponse response, User user) {
@@ -27,6 +28,6 @@ public class SecurityService {
 
 	public Optional<User> login(HttpServletRequest request) {
 		String login = tokenParser.parse(request);
-		return userRepository.findByLogin(login);
+		return loginRepository.findByLogin(login);
 	}
 }

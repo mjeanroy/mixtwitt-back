@@ -1,12 +1,31 @@
 package com.github.houssemba.mixtwitt.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
+@Entity
+@Table(name = "users")
 public class User {
-	private final Long id;
-	private final Date creationDate;
-	private final String login;
-	private final String password;
+	@Id
+	private Long id;
+
+	@Column(name = "creation_date")
+	private Date creationDate;
+
+	@Column(name = "login")
+	private String login;
+
+	@Column(name = "password")
+	@JsonIgnore
+	private String password;
+
+	private User() {
+	}
 
 	private User(Long id, Date creationDate, String login, String password) {
 		this.id = id;

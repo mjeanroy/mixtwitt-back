@@ -2,52 +2,17 @@ package com.github.houssemba.mixtwitt.domain.repository;
 
 import com.github.houssemba.mixtwitt.domain.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
-public class UserRepository extends AbstractRepository<User> {
+@RepositoryRestResource
+public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
-	@Autowired
-	public UserRepository(JdbcTemplate jdbcTemplate) {
-		super(jdbcTemplate);
-	}
+	User findById(Long id);
 
-	public Optional<User> findById(Long id) {
-		String sql =
-				"SELECT id, creation_date, login, password " +
-				"FROM users " +
-				"WHERE id = " + id;
-
-		return findOne(sql, USER_ROW_MAPPER);
-	}
-
-	public Optional<User> findByLogin(String login) {
-		String sql =
-			"SELECT id, creation_date, login, password " +
-			"FROM users " +
-			"WHERE login = '" + login + "'";
-
-		return findOne(sql, USER_ROW_MAPPER);
-	}
-
-	public Optional<User> findByLoginAndPassword(String login, String password) {
-		String sql =
-				"SELECT id, creation_date, login, password " +
-				"FROM users " +
-				"WHERE login = '" + login + "' " +
-				"AND password = '" + password + "'";
-
-		return findOne(sql, USER_ROW_MAPPER);
-	}
-
-	private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) -> new User.Builder()
-		.withId(rs.getLong("id"))
-		.withCreationDate(rs.getDate("creation_date"))
-		.withLogin(rs.getString("login"))
-		.withPassword(rs.getString("password"))
-		.build();
 }

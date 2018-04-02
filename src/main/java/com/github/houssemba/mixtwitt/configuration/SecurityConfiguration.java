@@ -1,5 +1,6 @@
 package com.github.houssemba.mixtwitt.configuration;
 
+import com.github.houssemba.mixtwitt.domain.repository.LoginRepository;
 import com.github.houssemba.mixtwitt.domain.repository.UserRepository;
 import com.github.houssemba.mixtwitt.security.encoders.Base64TokenEncoder;
 import com.github.houssemba.mixtwitt.security.encoders.TokenEncoder;
@@ -34,9 +35,9 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
-	public SecurityService securityService(TokenParser tokenParser, UserRepository userRepository) {
+	public SecurityService securityService(TokenParser tokenParser, LoginRepository loginRepository) {
 		log.info("Create security service");
-		return new SecurityService(tokenParser, userRepository);
+		return new SecurityService(tokenParser, loginRepository);
 	}
 
 	@Bean
