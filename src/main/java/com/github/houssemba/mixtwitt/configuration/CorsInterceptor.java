@@ -18,9 +18,9 @@ public class CorsInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		response.setHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
 		response.setHeader(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-		response.setHeader(ACCESS_CONTROL_EXPOSE_HEADERS, "*");
+		response.setHeader(ACCESS_CONTROL_EXPOSE_HEADERS, "origin, content-type, accept, mix-twitt");
 		response.setHeader(ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, PATCH, DELETE");
-		response.setHeader(ACCESS_CONTROL_ALLOW_HEADERS, "*");
+		response.setHeader(ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, mix-twitt");
 		response.setHeader(ACCESS_CONTROL_MAX_AGE, "3600");
 		return true;
 	}
