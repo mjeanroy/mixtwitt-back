@@ -49,6 +49,23 @@ public class User {
 	public Date getCreationDate() {
 		return creationDate;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public static class Builder {
 		private Long id;
 		private Date creationDate;
