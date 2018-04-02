@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class TweetDto {
 
-	private Long id;
+	private String id;
 	private Date creationDate;
 	private String login;
 
@@ -16,11 +16,11 @@ public class TweetDto {
 	@Size(max = 140)
 	private String message;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

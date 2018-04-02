@@ -3,19 +3,19 @@ package com.github.houssemba.mixtwitt.domain.model;
 import java.util.Date;
 
 public class Tweet {
-	private final Long id;
+	private final String id;
 	private final Date creationDate;
 	private final User user;
 	private final String message;
 
-	private Tweet(Long id, Date creationDate, User user, String message) {
+	private Tweet(String id, Date creationDate, User user, String message) {
 		this.id = id;
 		this.creationDate = creationDate;
 		this.user = user;
 		this.message = message;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -32,7 +32,7 @@ public class Tweet {
 	}
 
 	public static class Builder {
-		private Long id;
+		private String id;
 		private Date creationDate;
 		private User user;
 		private String message;
@@ -41,7 +41,7 @@ public class Tweet {
 			this.creationDate = new Date();
 		}
 
-		public Builder withId(Long id) {
+		public Builder withId(String id) {
 			this.id = id;
 			return this;
 		}

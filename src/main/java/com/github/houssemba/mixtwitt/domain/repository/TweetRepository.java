@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.github.houssemba.mixtwitt.domain.exceptions.DaoException;
 import com.github.houssemba.mixtwitt.domain.model.Tweet;
@@ -41,7 +42,7 @@ public class TweetRepository extends AbstractRepository<Tweet> {
 		return findAll(sql, TWEET_ROW_MAPPER);
 	}
 
-	public Optional<Tweet> findById(Long id) {
+	public Optional<Tweet> findById(String id) {
 		String sql =
 			"SELECT " +
 				"t.id as id, " +
@@ -51,39 +52,24 @@ public class TweetRepository extends AbstractRepository<Tweet> {
 				"u.login as user_login " +
 				"FROM tweets t " +
 				"INNER JOIN users u ON t.user_id = u.id " +
-				"WHERE t.id = " + id;
+				"WHERE t.id = '" + id + "'";
 
 		return findOne(sql, TWEET_ROW_MAPPER);
 	}
 
 	public Tweet save(User user, String message) {
-		KeyHolder key = new GeneratedKeyHolder();
-		InsertStatementCreation psc = new InsertStatementCreation(user.getId(), message);
-		jdbcTemplate.update(psc, key);
+		String id = UUID.randomUUID().toString();
+		Long userId = user.getId();
+		String sql = "INSERT INTO tweets(id, creation_date, message, user_id) VALUES ('" + id + "', NOW(), '" + message + "', " + userId + ")";
+		jdbcTemplate.update(sql);
 
-		return findById(key.getKey().longValue()).orElseThrow(() ->
+		return findById(id).orElseThrow(() ->
 				new DaoException("Cannot find previously inserted tweet")
 		);
 	}
 
-	private static class InsertStatementCreation implements PreparedStatementCreator {
-		private final String message;
-		private final Long userId;
-
-		private InsertStatementCreation(Long userId, String message) {
-			this.userId = userId;
-			this.message = message;
-		}
-
-		@Override
-		public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-			String sql = "INSERT INTO tweets(creation_date, message, user_id) VALUES (NOW(), '" + message + "', " + userId + ")";
-			return con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-		}
-	}
-
 	private static final RowMapper<Tweet> TWEET_ROW_MAPPER = (rs, rowNum) -> new Tweet.Builder()
-		.withId(rs.getLong("id"))
+		.withId(rs.getString("id"))
 		.withCreationDate(rs.getTimestamp("creation_date"))
 		.withMessage(rs.getString("message"))
 		.withUser(new User.Builder()
