@@ -20,19 +20,19 @@ public class LoginRepository extends AbstractRepository<User> {
 		String sql =
 				"SELECT id, creation_date, login, password " +
 						"FROM users " +
-						"WHERE login = '" + login + "'";
+						"WHERE login = ?";
 
-		return findOne(sql, USER_ROW_MAPPER);
+		return findOne(sql, USER_ROW_MAPPER, login);
 	}
 
 	public Optional<User> findByLoginAndPassword(String login, String password) {
 		String sql =
 				"SELECT id, creation_date, login, password " +
 						"FROM users " +
-						"WHERE login = '" + login + "' " +
-						"AND password = '" + password + "'";
+						"WHERE login = ? " +
+						"AND password = ?";
 
-		return findOne(sql, USER_ROW_MAPPER);
+		return findOne(sql, USER_ROW_MAPPER, login, password);
 	}
 
 	private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) -> new User.Builder()

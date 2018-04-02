@@ -52,16 +52,16 @@ public class TweetRepository extends AbstractRepository<Tweet> {
 				"u.login as user_login " +
 				"FROM tweets t " +
 				"INNER JOIN users u ON t.user_id = u.id " +
-				"WHERE t.id = '" + id + "'";
+				"WHERE t.id = ?";
 
-		return findOne(sql, TWEET_ROW_MAPPER);
+		return findOne(sql, TWEET_ROW_MAPPER, id);
 	}
 
 	public Tweet save(User user, String message) {
 		String id = UUID.randomUUID().toString();
 		Long userId = user.getId();
-		String sql = "INSERT INTO tweets(id, creation_date, message, user_id) VALUES ('" + id + "', NOW(), '" + message + "', " + userId + ")";
-		jdbcTemplate.update(sql);
+		String sql = "INSERT INTO tweets(id, creation_date, message, user_id) VALUES (?, NOW(), ?, ?)";
+		jdbcTemplate.update(sql, id, message, userId);
 
 		return findById(id).orElseThrow(() ->
 				new DaoException("Cannot find previously inserted tweet")

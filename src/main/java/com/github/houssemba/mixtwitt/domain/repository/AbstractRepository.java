@@ -15,9 +15,9 @@ abstract class AbstractRepository<T> {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	Optional<T> findOne(String query, RowMapper<T> mapper) {
+	Optional<T> findOne(String query, RowMapper<T> mapper, Object... args) {
 		try {
-			return Optional.of(jdbcTemplate.queryForObject(query, mapper));
+			return Optional.of(jdbcTemplate.queryForObject(query, mapper, args));
 		} catch (EmptyResultDataAccessException ex) {
 			return Optional.empty();
 		}
