@@ -21,7 +21,7 @@ public class CorsInterceptor implements HandlerInterceptor {
 		response.setHeader(ACCESS_CONTROL_EXPOSE_HEADERS, "origin, content-type, accept, mix-twitt");
 		response.setHeader(ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, PATCH, DELETE");
 		response.setHeader(ACCESS_CONTROL_ALLOW_HEADERS, "origin, content-type, accept, mix-twitt");
-		response.setHeader(ACCESS_CONTROL_MAX_AGE, "3600");
+		response.setHeader(ACCESS_CONTROL_MAX_AGE, "-1");
 		return true;
 	}
 
