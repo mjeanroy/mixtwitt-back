@@ -1,4 +1,4 @@
-FROM openjdk:8-jre
+FROM lwieske/java-8:jre-8u112
 
 ARG JAR_FILE
 ADD target/${JAR_FILE} /usr/share/mixtwitt.jar
